@@ -21,7 +21,18 @@ class App extends Component {
     if (city && country) {
       const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${API_KEY}&units=metric`)
       const data = await api_call.json()
-      this.setState({
+      console.log(data);
+      if((data.cod == "404")&&(data.message == "city not found")){
+        this.setState({
+          temprature: undefined,
+          city: undefined,
+          country: undefined,
+          humidity: undefined,
+          description: undefined,
+          error:"City not found"});
+      }
+      else{
+        this.setState({
         temprature: data.main.temp,
         city: data.name,
         country: data.sys.country,
@@ -30,9 +41,20 @@ class App extends Component {
         error: ''
       })
     }
+  }
     else if (city) {
       const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
       const data = await api_call.json()
+      if((data.cod == "404")&&(data.message == "city not found")){
+        this.setState({
+          temprature: undefined,
+          city: undefined,
+          country: undefined,
+          humidity: undefined,
+          description: undefined,
+          error:"City not found"});
+      }
+      else{
       this.setState({
         temprature: data.main.temp,
         city: data.name,
@@ -42,6 +64,7 @@ class App extends Component {
         error: ''
       })
     }
+  }
     else {
       this.setState({
         temprature: undefined,
